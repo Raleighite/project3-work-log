@@ -2,20 +2,29 @@ import os
 import sys
 
 def run_program():
-    pass
+    display_menu()
 
 def display_menu():
+    clear_screen()
     print("What would you like to do? ")
     choice = input("""Chose one of the following: \n
     N -> Make a new entry \n
     S -> Search for an entry \n
-    Q -> Quit""").lower().strip()
+    Q -> Quit\n
+    -> """).lower().strip()
     if choice == 's':
         search_for_entry()
     elif choice == 'q':
         sys.exit()
     else:
         new_entry()
+
+def clear_screen():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
 
 def new_entry():
     '''Make a new entry in the CSV file. New entry must include
@@ -55,5 +64,5 @@ def edit_entry(entry):
 
 
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     run_program()
