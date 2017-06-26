@@ -1,7 +1,13 @@
 import os
 import sys
+import csv
 
+CSV_FILE = 'entries.csv'
+FIELDNAMES = ['Name', 'Minutes Spent', 'Date', 'Notes']
 def run_program():
+    with open(CSV_FILE, 'a') as csvfile:
+        entry_writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
+        entry_writer.writeheader()
     display_menu()
 
 def display_menu():
@@ -29,6 +35,17 @@ def clear_screen():
 def new_entry():
     '''Make a new entry in the CSV file. New entry must include
     [Name], [Minutes Spent], [Date], and [Notes]'''
+    with open(CSV_FILE, 'a') as csvfile:
+        task = {}
+        task['Name'] = input('What is the name of your task? ')
+        task['Minutes Spent'] = input('How many minutes total did you spend on this task? ')
+        task['Date'] = input('What day did this task occur? Please use DD/MM/YYYY format: ')
+        if input('Would you like to add notes for this task? ').lower() == 'y':
+            task['Notes'] = input('Please types your notes: ')
+        task_writer = csv.DictWriter(csvfile, FIELDNAMES)
+        task_writer.writerow(task)
+
+
 
 def search_for_entry():
     '''Display menu with options for searching for an entry these
