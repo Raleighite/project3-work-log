@@ -4,11 +4,15 @@ import csv
 
 CSV_FILE = 'entries.csv'
 FIELDNAMES = ['Name', 'Minutes Spent', 'Date', 'Notes']
+
 def run_program():
-    with open(CSV_FILE, 'a') as csvfile:
-        entry_writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
-        entry_writer.writeheader()
-    display_menu()
+    if os.path.exists('entries.csv'):
+        display_menu()
+    else:
+        with open(CSV_FILE, 'a') as csvfile:
+            entry_writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
+            entry_writer.writeheader()
+        display_menu()
 
 def display_menu():
     clear_screen()
