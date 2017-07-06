@@ -90,14 +90,25 @@ def search_for_entry():
 def search_by_date():
     '''Allows user to search for tasks by a date'''
     clear_screen()
+    results = []
     date_given= input("Please enter the date you want to search for tasks from. Please"
           "use the format MM-DD-YYYY ")
-    date_search = re.compile(r''+date_given)
-    results = []
-    with open('entries.csv') as csvfile:
-        data = csvfile.read()
-        results.append(date_search.findall(data))
-    print(results)
+    if re.search(r'\d{2}-\d{2}-\d{4}', date_given):
+        with open('entries.csv') as csvfile:
+            csv_dict = csv.DictReader(csvfile)
+            for entry in csv_dict:
+                if date_given in entry['Date']:
+                    results.append(entry)
+    else:
+        print("Sorry, that's not a date I recognize. Please try again.")
+        search_by_date()
+    if results:
+        display_entries(results)
+        input("Press any key to return to the search menu")
+        search_for_entry()
+    else:
+        print("No results were found for your search")
+        search_for_entry()
 
 def search_by_time_spent():
     '''Allows user to search for tasks by number of minutes spent on
@@ -109,20 +120,59 @@ def search_exact():
 def search_by_pattern():
     '''Allows user to provide a RegEx pattern to search for tasks'''
 
-def display_entry():
+def display_entry(entry):
     '''Displays one entry'''
+    print("*" * 50)
+    print("Date and time: {}".format(entry['Date']))
+    print("Task name: {}".format(entry['Name']))
+    print("Minutes spent: {}".format(entry['Minutes Spent']))
+    if entry['Notes']:
+        print("Notes: {}".format(entry['Notes']))
+    print("*" * 50)
 
-
-def display_entries():
+def display_entries(entries):
     '''Used for returning search results. Can be paged through. Also
     provides options to editing an entry, deleting an entry, and returning
     to the main menu'''
+    print("Based on your search I found {} entries".format(len(entries)))
+    count = 0
+    while count <= len(entries):
+        display_entry(entries[count])
+        entry = entries[count]
+        print("\n")
+        choice = input("""
+        What would you like to do?
+        E -> Edit this entry
+        D -> Delete this entry
+        P -> View previous entry
+        N -> View next entry
+        S -> Return to search menu
+        """).strip().lower
+        if choice == "e":
+            edit_entry(entry)
+        elif choice == "d":
+            delete_entry(entry)
+        elif choice == "p":
+            count -= 1
+        elif choice == "s":
+            search_for_entry()
+        elif choice == "n":
+            count += 1
+        else:
+            print("That's not a valid choice, start again")
+            display_entries(entries)
+    if count > len(entries):
+        input("That's all the entries I could find. Press any key to return to the search menu")
+        search_for_entry()
+
 
 def delete_entry(entry):
     '''Removes a specified entry from the CSV file'''
+    print("You reached the delete entry section")
 
 def edit_entry(entry):
     '''Allows user to change any field of a passed in entry'''
+    print("You reached the edit entry section")
 
 
 
