@@ -104,7 +104,7 @@ def search_by_date():
         search_by_date()
     if results:
         display_entries(results)
-        input("Press any key to return to the search menu")
+        input("That's all I could find. Press any key to return to the search menu")
         search_for_entry()
     else:
         print("No results were found for your search")
@@ -136,7 +136,7 @@ def display_entries(entries):
     to the main menu'''
     print("Based on your search I found {} entries".format(len(entries)))
     count = 0
-    while count <= len(entries):
+    while count < len(entries):
         display_entry(entries[count])
         entry = entries[count]
         print("\n")
@@ -147,7 +147,7 @@ def display_entries(entries):
         P -> View previous entry
         N -> View next entry
         S -> Return to search menu
-        """).strip().lower
+        """).strip().lower()
         if choice == "e":
             edit_entry(entry)
         elif choice == "d":
