@@ -8,6 +8,7 @@ CSV_FILE = 'entries.csv'
 FIELDNAMES = ['ID','Name', 'Minutes Spent', 'Date', 'Notes']
 DATA_ID_FORMAT = '%Y%m%d%H%M%S%f'
 
+
 def run_program():
     if os.path.exists('entries.csv'):
         display_menu()
@@ -16,6 +17,7 @@ def run_program():
             entry_writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
             entry_writer.writeheader()
         display_menu()
+
 
 def display_menu():
     clear_screen()
@@ -31,6 +33,7 @@ def display_menu():
         sys.exit()
     else:
         new_entry()
+
 
 def clear_screen():
     if os.name == 'nt':
@@ -60,7 +63,6 @@ def new_entry():
     display_menu()
 
 
-
 def search_for_entry():
     '''Display menu with options for searching for an entry these
     options include searching by [Date], [Time Spent], [Exact Search]
@@ -87,6 +89,7 @@ def search_for_entry():
     else:
         display_menu()
 
+
 def search_by_date():
     '''Allows user to search for tasks by a date'''
     clear_screen()
@@ -107,18 +110,86 @@ def search_by_date():
         input("That's all I could find. Press any key to return to the search menu")
         search_for_entry()
     else:
-        print("No results were found for your search")
+        clear_screen()
+        input("No results were found for your search. Press any key to return to search menu.")
         search_for_entry()
+
 
 def search_by_time_spent():
     '''Allows user to search for tasks by number of minutes spent on
     task'''
+    clear_screen()
+    results = []
+    time_given = input("Search for tasks that took how many minutes? Please"
+                       "convert all time to minutes > ")
+    if re.search(r'\d+', time_given):
+        with open('entries.csv') as csvfile:
+            csv_dict = csv.DictReader(csvfile)
+            for entry in csv_dict:
+                if time_given in entry['Minutes Spent']:
+                    results.append(entry)
+    else:
+        print("Sorry, that's not a valid entry. Please try again.")
+        search_by_time_spent()
+    if results:
+        display_entries(results)
+        input("That's all I could find. Press any key to return to the search menu")
+        search_for_entry()
+    else:
+        clear_screen()
+        input("Sorry, no results were found for your entry. Press any key to return to the search menu")
+        search_for_entry()
+
 
 def search_exact():
     '''Allows user to search by the exact name of the task'''
+    clear_screen()
+    results = []
+    text = input("Please enter part or the full name of a task to search for > ")
+    if text:
+        with open('entries.csv') as csvfile:
+            csv_dict = csv.DictReader(csvfile)
+            for entry in csv_dict:
+                if text in entry['Name']:
+                    results.append(entry)
+    else:
+        print("Sorry, you didn't enter anything. Please try again.")
+        search_exact()
+    if results:
+        display_entries(results)
+        input("That's all I could find. Press any key to return to the search menu")
+        search_for_entry()
+    else:
+        clear_screen()
+        input("Sorry, no results were found for your entry. Press any key to return to the search menu.")
+        search_for_entry()
+
 
 def search_by_pattern():
     '''Allows user to provide a RegEx pattern to search for tasks'''
+    clear_screen()
+    results = []
+    pattern = input("Please enter the regex pattern you wish to search with > ")
+    compile_pattern = re.compile(r''+pattern)
+    if pattern:
+        with open('entries.csv') as csvfile:
+            csv_dict = csv.DictReader(csvfile)
+            for entry in csv_dict:
+                if pattern.findall(entry):
+                    results.append(entry)
+    else:
+        clear_screen()
+        input("Sorry, that wasn't a valid entry. Press any key to try again")
+        search_by_pattern()
+    if results:
+        display_entries(results)
+        input("That's all I could find. Press any key to return to the search menu")
+        search_for_entry()
+    else:
+        clear_screen()
+        input("Sorry, no results were found for your entry. Press any key to return to the search menu.")
+        search_for_entry()
+
 
 def display_entry(entry):
     '''Displays one entry'''
@@ -129,6 +200,7 @@ def display_entry(entry):
     if entry['Notes']:
         print("Notes: {}".format(entry['Notes']))
     print("*" * 50)
+
 
 def display_entries(entries):
     '''Used for returning search results. Can be paged through. Also
@@ -142,8 +214,8 @@ def display_entries(entries):
         print("\n")
         choice = input("""
         What would you like to do?
-        E -> Edit this entry
-        D -> Delete this entry
+        E -> Edit this entry (feature coming in a later update)
+        D -> Delete this entry (feature coming in a later update)
         P -> View previous entry
         N -> View next entry
         S -> Return to search menu
@@ -168,11 +240,12 @@ def display_entries(entries):
 
 def delete_entry(entry):
     '''Removes a specified entry from the CSV file'''
-    print("You reached the delete entry section")
+    print("You reached the delete entry section. This feature is under construction.")
+
 
 def edit_entry(entry):
     '''Allows user to change any field of a passed in entry'''
-    print("You reached the edit entry section")
+    print("You reached the edit entry section. This feature is under construction")
 
 
 
