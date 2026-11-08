@@ -1,0 +1,30 @@
+{
+  "source_commit": "5a9e8bf761a9e54fa590ad40f8066ca4b5385fdf",
+  "tracked_regular_files": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "bytes": 1167
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "bytes": 795
+    },
+    {
+      "path": "worklog.py",
+      "mode": "100644",
+      "bytes": 8224
+    }
+  ],
+  "admission_omissions": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "bytes": 1167
+    }
+  ],
+  "application_code_coverage": "All application Python/JS/CSS/HTML source admitted; input CSV data and dependency/development metadata are explicit outside boundaries.",
+  "route_review": "No HTTP router in CLI source.",
+  "original_license_unchanged": true
+}

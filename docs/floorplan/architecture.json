@@ -1,0 +1,128 @@
+{
+  "$schema": "floorplan/architecture@1",
+  "audience": "everyone",
+  "project": {
+    "name": "project3-work-log",
+    "summary": "A terminal CSV work log creates timestamped tasks, searches stored rows and pages results. Edit/delete are placeholders and regex search is defective. No HTTP routes.",
+    "entrypoints": [
+      "worklog.py"
+    ]
+  },
+  "include": [
+    "code",
+    "config",
+    "data",
+    "docs",
+    "other"
+  ],
+  "nodes": [
+    {
+      "id": "menu",
+      "label": "Task capture and menus",
+      "summary": "run_program creates a CSV header if absent; menus prompt for a task, minutes and optional notes.",
+      "paths": [
+        "worklog.py"
+      ],
+      "kind": "service"
+    },
+    {
+      "id": "csv",
+      "label": "Local CSV persistence",
+      "summary": "Entries are appended to a working-directory CSV and read back by DictReader; no actual records are included.",
+      "paths": [],
+      "kind": "external"
+    },
+    {
+      "id": "search",
+      "label": "Search and paging",
+      "summary": "Date, minutes and task-name searches scan rows; results page through display_entries.",
+      "paths": [
+        "worklog.py"
+      ],
+      "kind": "service"
+    },
+    {
+      "id": "reference",
+      "label": "Project reference and license",
+      "summary": "Original course documentation and any upstream license remain separate from executable processing.",
+      "paths": [
+        "README.md"
+      ],
+      "kind": "service"
+    }
+  ],
+  "edges": [
+    {
+      "from": "menu",
+      "to": "csv",
+      "label": "Append the timestamped ID, task, minutes, date and notes.",
+      "kind": "data"
+    },
+    {
+      "from": "csv",
+      "to": "search",
+      "label": "Choose date, minutes or task-name search and gather matching rows.",
+      "kind": "data"
+    },
+    {
+      "from": "search",
+      "to": "csv",
+      "label": "Read the same CSV without a database or network service.",
+      "kind": "data"
+    }
+  ],
+  "flows": [
+    {
+      "id": "main",
+      "title": "Follow the terminal processing path",
+      "steps": [
+        {
+          "node": "menu",
+          "note": "Start run_program and enter a new task through the terminal menu."
+        },
+        {
+          "node": "csv",
+          "note": "Append the timestamped ID, task, minutes, date and notes."
+        },
+        {
+          "node": "search",
+          "note": "Choose date, minutes or task-name search and gather matching rows."
+        },
+        {
+          "node": "csv",
+          "note": "Read the same CSV without a database or network service."
+        },
+        {
+          "node": "search",
+          "note": "Display one result at a time; edit/delete only print construction messages."
+        }
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "node": "menu",
+      "title": "Task capture and menus",
+      "note": "run_program creates a CSV header if absent; menus prompt for a task, minutes and optional notes."
+    },
+    {
+      "node": "csv",
+      "title": "Local CSV persistence",
+      "note": "Entries are appended to a working-directory CSV and read back by DictReader; no actual records are included."
+    },
+    {
+      "node": "search",
+      "title": "Search and paging",
+      "note": "Date, minutes and task-name searches scan rows; results page through display_entries."
+    }
+  ],
+  "annotations": [
+    {
+      "path": "worklog.py",
+      "note": "README goals are not evidence of working features. Regex search calls pattern.findall on a string; editing and deletion are unimplemented. No records were read and no application was executed.",
+      "tags": [
+        "hotspot"
+      ]
+    }
+  ]
+}
