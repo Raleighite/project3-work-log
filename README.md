@@ -12,3 +12,7 @@ and allows for search by date or a plain text search. Also can generate reports.
 * Users can search by date, time spent, exact search, regex pattern, and date ranges
 * Entries are displayed one at a time with the ability to page forward and backward
 * Complies with most common PEP 8 standards
+
+## Architecture map
+
+Download and open the [offline Floorplan](docs/floorplan/index.html), or read the [map guide](docs/floorplan/README.md). The map follows actual source processing and documents unfinished features; it is not application runtime verification.

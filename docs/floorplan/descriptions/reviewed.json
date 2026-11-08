@@ -1,0 +1,13 @@
+{
+  "files": {
+    "worklog.py": {
+      "name": "CSV work-log interaction",
+      "description": "Creates the entries CSV, appends timestamped tasks, scans rows for date/minutes/name matches and pages results. Minutes matching is substring-based. Regex search mistakenly invokes findall on the input string instead of the compiled pattern. Edit/delete are stubs."
+    },
+    "README.md": {
+      "name": "Course goals versus implementation",
+      "description": "Lists desired work-log features; code implements CSV entry/search but does not implement the promised editing, deletion or date-range search."
+    }
+  },
+  "routes": {}
+}
